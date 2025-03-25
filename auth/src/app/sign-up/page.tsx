@@ -132,26 +132,6 @@ const SignUp = () => {
                         </Button>
                     </form>
                     <Separator />
-                    <div className="flex my-2 justify-evenly mx-auto items-center">
-                        <Button
-                            disabled={false}
-                            onClick={() => { }}
-                            variant="outline"
-                            size="lg"
-                            className="bg-slate-300 hover:bg-slate-400 hover:scale-110"
-                        >
-                            <FcGoogle className="size-8 left-2.5 top-2.5" />
-                        </Button>
-                        <Button
-                            disabled={false}
-                            onClick={() => { }}
-                            variant="outline"
-                            size="lg"
-                            className="bg-slate-300 hover:bg-slate-400 hover:scale-110"
-                        >
-                            <FaGithub className="size-8 left-2.5 top-2.5" />
-                        </Button>
-                    </div>
                     <p className="text-center text-sm mt-2 text-muted-foreground">
                         Already have an account?
                         <Link className="text-sky-700 ml-4 hover:underline cursor-pointer" href="sign-in">Sign in</Link>
