@@ -1,9 +1,12 @@
 "use client"
+
+import ImageUploader from "@/components/ImageUploader";
+
 export default function Home() {
   return (
     <div>
       <div className="m-auto w-[900px] bg-slate-300">
-
+        <ImageUploader />
         <h1 className="text-2xl font-bold text-center pb-2">ШИНЭ ОРОН СУУЦУУД</h1>
         <div className="carousel w-full h-56">
           <div id="item1" className="carousel-item w-full">
