@@ -37,6 +37,9 @@ const UserButton = () => {
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" side="bottom" className="menu bg-base-200 shadow-xl rounded-box w-52">
+                        <DropdownMenuItem className="p-3 hover:bg-primary hover:text-white cursor-pointer">
+                            <Link href="/dashboard" className="w-full h-full block">Dashboard</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem className="p-3 hover:bg-primary hover:text-white cursor-pointer" onClick={handleSignOut}>
                             Log out
                         </DropdownMenuItem>
