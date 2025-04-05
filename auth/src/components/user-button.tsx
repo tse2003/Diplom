@@ -38,7 +38,7 @@ const UserButton = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" side="bottom" className="menu bg-base-200 shadow-xl rounded-box w-52">
                         <DropdownMenuItem className="p-3 hover:bg-primary hover:text-white cursor-pointer">
-                            <Link href="/dashboard" className="w-full h-full block">Dashboard</Link>
+                            <Link href="/dashboard" className="w-full h-full block">Зар нэмэх</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="p-3 hover:bg-primary hover:text-white cursor-pointer" onClick={handleSignOut}>
                             Log out
@@ -71,7 +71,7 @@ export default function Header() {
                         <li><Link href="/news">МЭДЭЭ</Link></li>
                         <li><Link href="/pricing">ҮНЭ ХАНШ</Link></li>
                         <li><Link href="/agents">АГЕНТУУД</Link></li>
-                        <li><Link href="/listings">БАЙРНЫ ЗАР</Link></li>
+                        <li><Link href="/zaruud">БАЙРНЫ ЗАР</Link></li>
                     </ul>
                 </div>
                 <Link href="/" className="flex items-center">
@@ -86,7 +86,7 @@ export default function Header() {
                     <li><Link href="/news">МЭДЭЭ</Link></li>
                     <li><Link href="/pricing">ҮНЭ ХАНШ</Link></li>
                     <li><Link href="/agents">АГЕНТУУД</Link></li>
-                    <li><Link href="/listings">БАЙРНЫ ЗАР</Link></li>
+                    <li><Link href="/zaruud">БАЙРНЫ ЗАР</Link></li>
                 </ul>
             </div>
 

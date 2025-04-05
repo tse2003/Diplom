@@ -7,20 +7,35 @@ interface BairData {
   title: string
   duureg: string
   khoroo: string
+  nukhtsul: string
+  turul: string
   mkb: string
   mkbune: string
   niitune: string
   bairshil: string
   phone: string
+  dawkhar: string
+  uruu: string
+  niitelsenognoo: string
   imageUrl?: string
   tailbar?: string
 }
 
+const duuregList = ['Баянзүрх', 'Сүхбаатар', 'Чингэлтэй', 'Баянгол', 'Хан-Уул', 'Сонгинохайрхан', 'Багануур', 'Багахангай', 'Налайх']
+const turulList = ['Шинэ', 'Хуучин']
+const dawkharList = ['1', '2', '3', '4', '5+']
+const uruuList = ['1', '2', '3', '4', '5+']
+
 export default function ZaruudPage() {
   const [bairuud, setBairuud] = useState<BairData[]>([])
+  const [selected, setSelected] = useState<BairData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [selected, setSelected] = useState<BairData | null>(null)
+
+  const [duuregFilter, setDuuregFilter] = useState('Бүгд')
+  const [turulFilter, setTurulFilter] = useState('Бүгд')
+  const [dawkharFilter, setDawkharFilter] = useState('Бүгд')
+  const [uruuFilter, setUruuFilter] = useState('Бүгд')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,69 +57,103 @@ export default function ZaruudPage() {
     fetchData()
   }, [])
 
+  const filtered = bairuud.filter((item) => {
+    return (
+      (duuregFilter === 'Бүгд' || item.duureg === duuregFilter) &&
+      (turulFilter === 'Бүгд' || item.turul === turulFilter) &&
+      (dawkharFilter === 'Бүгд' || item.dawkhar === dawkharFilter) &&
+      (uruuFilter === 'Бүгд' || item.uruu === uruuFilter)
+    )
+  })
+
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Бүх зарууд</h1>
+
+      {/* Шүүлтүүр хэсэг */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <select className="select select-bordered" value={duuregFilter} onChange={(e) => setDuuregFilter(e.target.value)}>
+          <option value="Бүгд">Дүүрэг</option>
+          {duuregList.map((d) => <option key={d}>{d}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={turulFilter} onChange={(e) => setTurulFilter(e.target.value)}>
+          <option value="Бүгд">Төрөл</option>
+          {turulList.map((t) => <option key={t}>{t}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={dawkharFilter} onChange={(e) => setDawkharFilter(e.target.value)}>
+          <option value="Бүгд">Давхар</option>
+          {dawkharList.map((d) => <option key={d}>{d}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={uruuFilter} onChange={(e) => setUruuFilter(e.target.value)}>
+          <option value="Бүгд">Өрөө</option>
+          {uruuList.map((u) => <option key={u}>{u}</option>)}
+        </select>
+      </div>
 
       {loading && <p>Уншиж байна...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {bairuud.map((item) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filtered.map((item) => (
           <div
             key={item._id}
-            className="border rounded p-4 bg-white shadow cursor-pointer hover:bg-gray-100 transition"
+            className="card bg-base-100 shadow-sm w-full cursor-pointer"
             onClick={() => setSelected(item)}
           >
-            {item.imageUrl && (
+            <figure className="px-10 pt-10">
               <img
-                src={item.imageUrl}
+                src={item.imageUrl || '/placeholder.png'}
                 alt={item.title}
-                className="w-full h-48 object-cover rounded mb-2"
+                className="rounded-xl h-48 object-cover"
               />
-            )}
-            <h2 className="text-xl font-semibold">{item.title}</h2>
-            <p>Дүүрэг: {item.duureg}, {item.khoroo}</p>
-            <p>Талбай: {item.mkb} м² × {item.mkbune}₮</p>
-            <p>Нийт үнэ: {item.niitune}₮</p>
+            </figure>
+            <div className="card-body items-center text-center">
+              <h2 className="card-title">{item.title}</h2>
+              <p>{item.mkb} м² × {item.mkbune}₮</p>
+              <p>Нийт: {item.niitune}₮</p>
+              <div className="card-actions">
+                <button className="btn btn-primary">Дэлгэрэнгүй</button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* DaisyUI Dialog */}
+      {/* Dialog */}
       {selected && (
-        <dialog id="detail_modal" className="modal modal-open">
-          <div className="modal-box w-11/12 max-w-md p-0 overflow-hidden">
-            <div className="card bg-base-100 shadow-sm w-full">
-              <figure>
-                <img
-                  src={selected.imageUrl}
-                  alt={selected.title}
-                  className="object-cover w-full h-52"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">{selected.title}</h2>
-                <p className="text-sm text-gray-600">
-                  <strong>Дүүрэг:</strong> {selected.duureg}, {selected.khoroo}<br />
-                  <strong>Талбай:</strong> {selected.mkb} м² × {selected.mkbune}₮<br />
-                  <strong>Нийт үнэ:</strong> {selected.niitune}₮<br />
-                  <strong>Байршил:</strong> {selected.bairshil}<br />
-                  <strong>Утас:</strong> {selected.phone}
-                </p>
-                {selected.tailbar && (
-                  <p className="text-gray-500 mt-2 text-sm">{selected.tailbar}</p>
-                )}
-                <div className="card-actions justify-end mt-4">
-                  <button
-                    className="btn"
-                    onClick={() => setSelected(null)}
-                  >
-                    Хаах
-                  </button>
-                  <button className="btn btn-primary">Залгах</button>
-                </div>
-              </div>
+        <dialog id="my_modal" className="modal modal-open" onClick={() => setSelected(null)}>
+          <div
+            className="modal-box w-[700px] max-w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-bold text-lg mb-2">{selected.title}</h3>
+            {selected.imageUrl && (
+              <img
+                src={selected.imageUrl}
+                alt="Image"
+                className="w-full h-52 object-cover rounded mb-3"
+              />
+            )}
+            <p><b>Дүүрэг:</b> {selected.duureg}, {selected.khoroo}</p>
+            <p><b>Талбай:</b> {selected.mkb} м²</p>
+            <p><b>Нэгж үнэ:</b> {selected.mkbune}₮</p>
+            <p><b>Нийт үнэ:</b> {selected.niitune}₮</p>
+            <p><b>Төлөв:</b> {selected.nukhtsul}</p>
+            <p><b>Төрөл:</b> {selected.turul}</p>
+            <p><b>Байршил:</b> {selected.bairshil}</p>
+            <p><b>Давхар:</b> {selected.dawkhar}</p>
+            <p><b>Өрөө:</b> {selected.uruu}</p>
+            <p><b>Утас:</b> {selected.phone}</p>
+            <p><b>Нийтэлсэн огноо:</b> {selected.niitelsenognoo}</p>
+            {selected.tailbar && (
+              <p className="mt-2 text-gray-600 whitespace-pre-line">{selected.tailbar}</p>
+            )}
+
+            <div className="modal-action">
+              <button className="btn" onClick={() => setSelected(null)}>Хаах</button>
             </div>
           </div>
         </dialog>
