@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 export default function BairUploader() {
   const today = new Date().toISOString().split('T')[0]
-  const UNIT_PRICE = 1500000 // 1м² = 1,500,000₮
 
   const [form, setForm] = useState({
     title: '', duureg: '', khoroo: '', nukhtsul: '', turul: '',
@@ -44,8 +43,7 @@ export default function BairUploader() {
     if (name === 'mkb' || name === 'mkbune') {
       const mkb = parseFloat(name === 'mkb' ? value : form.mkb)
       const mkbune = parseFloat(name === 'mkbune' ? value : form.mkbune)
-      const total = (isNaN(mkb) ? 0 : mkb) + (isNaN(mkbune) ? 0 : mkbune)
-      const niitune = total * UNIT_PRICE
+      const niitune = mkb * mkbune
       updatedForm.niitune = niitune ? niitune.toString() : ''
     }
 
