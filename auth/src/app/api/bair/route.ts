@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import fs from 'fs/promises'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 
 const uploadDir = path.join(process.cwd(), 'public', 'uploads')
 
@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
 
   const imageUrl = await saveFile(file)
 
-  // Extract form fields
   const data = {
     imageUrl,
     title: formData.get('title'),
@@ -47,14 +46,29 @@ export async function POST(req: NextRequest) {
     createdAt: new Date(),
   }
 
-  // Save to MongoDB
   const client = await MongoClient.connect(process.env.MONGO!)
   const db = client.db()
   const collection = db.collection('bairuud')
 
   const result = await collection.insertOne(data)
-
   client.close()
 
   return NextResponse.json({ success: true, imageUrl, insertedId: result.insertedId })
+}
+
+export async function GET() {
+  const client = await MongoClient.connect(process.env.MONGO!)
+  const db = client.db()
+  const collection = db.collection('bairuud')
+
+  const bairuud = await collection.find().sort({ createdAt: -1 }).toArray()
+  client.close()
+
+  // Convert _id to string for React key
+  const cleaned = bairuud.map((item) => ({
+    ...item,
+    _id: item._id.toString(),
+  }))
+
+  return NextResponse.json(cleaned)
 }
