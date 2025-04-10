@@ -68,7 +68,7 @@ export default function Header() {
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box w-52  shadow">
                         <li><Link href="/">НҮҮР</Link></li>
-                        <li><Link href="/news">МЭДЭЭ</Link></li>
+                        <li><Link href="/medee">МЭДЭЭ</Link></li>
                         <li><Link href="/pricing">ҮНЭ ХАНШ</Link></li>
                         <li><Link href="/agents">ОФФИС & АГЕНТУУД</Link></li>
                         <li><Link href="/zaruud">БАЙРНЫ ЗАР</Link></li>
@@ -83,7 +83,7 @@ export default function Header() {
             <div className="hidden lg:flex">
                 <ul className="menu menu-horizontal px-2 font-semibold flex gap-8">
                     <li><Link href="/">НҮҮР</Link></li>
-                    <li><Link href="/news">МЭДЭЭ</Link></li>
+                    <li><Link href="/medee">МЭДЭЭ</Link></li>
                     <li><Link href="/pricing">ҮНЭ ХАНШ</Link></li>
                     <li><Link href="/agents">ОФФИС & АГЕНТУУД</Link></li>
                     <li><Link href="/zaruud">БАЙРНЫ ЗАР</Link></li>
