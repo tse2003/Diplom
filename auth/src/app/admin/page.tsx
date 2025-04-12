@@ -1,5 +1,6 @@
 'use client'
 
+import UneKhanshTable from '@/components/UneKhanshTable'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -158,9 +159,14 @@ export default function AdminPanel() {
         {/* --- Үнэ ханш --- */}
         {active === 'Үнэ ханш' && (
           <div className="bg-white p-4 rounded-xl shadow">
-            <h3 className="text-lg font-semibold mb-3">Үнэ ханш</h3>
-            <p className="text-sm text-gray-500">(Энд үнэ ханшийн мэдээлэл ирнэ)</p>
-          </div>
+            <h1 className="text-2xl font-bold mb-4">Үнийн мэдээлэл</h1>
+            <Link href="/add-unekhansh">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
+              ➕ Мэдээ нэмэх
+            </button>
+            </Link>
+              <UneKhanshTable />
+            </div>
         )}
 
         {/* --- Оффис & агентууд --- */}
