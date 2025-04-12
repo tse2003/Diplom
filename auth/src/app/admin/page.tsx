@@ -1,5 +1,6 @@
 'use client'
 
+import ImageTable from '@/components/ImageTable'
 import UneKhanshTable from '@/components/UneKhanshTable'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -112,7 +113,7 @@ export default function AdminPanel() {
           <div>
             <Link href="/Addmedee">
               <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
-                ➕ Мэдээ нэмэх
+                ➕ Нэмэх
               </button>
             </Link>
 
@@ -125,28 +126,28 @@ export default function AdminPanel() {
                 <table className="min-w-full bg-white border border-gray-200 shadow rounded-xl">
                   <thead className="bg-gray-100">
                     <tr>
+                      <th className="py-3 px-4 border-b text-left">Зураг</th>
                       <th className="py-3 px-4 border-b text-left">Гарчиг</th>
                       <th className="py-3 px-4 border-b text-left">Тайлбар</th>
                       <th className="py-3 px-4 border-b text-left">Огноо</th>
-                      <th className="py-3 px-4 border-b text-left">Зураг</th>
-                      <th className="py-3 px-4 border-b text-left">Үйлдэл</th>
+                      {/* <th className="py-3 px-4 border-b text-left">Үйлдэл</th> */}
                     </tr>
                   </thead>
                   <tbody>
                     {medee.map((item) => (
                       <tr key={item._id} className="hover:bg-gray-50">
+                        <td className="py-3 px-4 border-b">
+                          <img src={item.imgUrl} alt="Зураг" className="w-16 h-16 object-cover rounded" />
+                        </td>
                         <td className="py-3 px-4 border-b font-medium">{item.garchig}</td>
                         <td className="py-3 px-4 border-b text-sm text-gray-600 line-clamp-2">{item.tailbar}</td>
                         <td className="py-3 px-4 border-b text-xs text-gray-500">
                           {new Date(item.ognoo).toLocaleDateString('mn-MN')}
                         </td>
-                        <td className="py-3 px-4 border-b">
-                          <img src={item.imgUrl} alt="Зураг" className="w-16 h-16 object-cover rounded" />
-                        </td>
-                        <td className="py-3 px-4 border-b text-sm">
+                        {/* <td className="py-3 px-4 border-b text-sm">
                           <button className="text-blue-600 hover:underline mr-2">Засах</button>
                           <button className="text-red-600 hover:underline">Устгах</button>
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>
@@ -159,11 +160,11 @@ export default function AdminPanel() {
         {/* --- Үнэ ханш --- */}
         {active === 'Үнэ ханш' && (
           <div className="bg-white p-4 rounded-xl shadow">
-            <h1 className="text-2xl font-bold mb-4">Үнийн мэдээлэл</h1>
+            <h1 className="text-2xl font-bold mb-4">Үнэ ханш</h1>
             <Link href="/add-unekhansh">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
-              ➕ Мэдээ нэмэх
-            </button>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
+                ➕ Нэмэх
+              </button>
             </Link>
               <UneKhanshTable />
             </div>
@@ -173,7 +174,12 @@ export default function AdminPanel() {
         {active === 'Оффис & агентууд' && (
           <div className="bg-white p-4 rounded-xl shadow">
             <h3 className="text-lg font-semibold mb-3">Оффисууд</h3>
-            <p className="text-sm text-gray-500">(Оффис, агентуудын жагсаалт)</p>
+            <Link href="/upload">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
+                ➕ Нэмэх
+              </button>
+            </Link>
+            <ImageTable />
           </div>
         )}
       </main>

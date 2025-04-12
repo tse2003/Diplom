@@ -47,16 +47,40 @@ export default function AddUneKhanshPage() {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 bg-white p-6 shadow rounded">
-      <h1 className="text-xl font-bold mb-4">Үнийн мэдээлэл нэмэх</h1>
+      <h1 className="text-xl font-bold mb-4">Нэмэх</h1>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-        <input name="baiguullaga" placeholder="Байгууллагын нэр" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="projectNer" placeholder="Төслийн нэр" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="bairshil" placeholder="Байршил" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="ailToo" placeholder="Айлын тоо" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="ashiglaltOgnoo" placeholder="Ашиглалтанд орох хугацаа" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="uruuniSongolt" placeholder="Өрөөний сонголт" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="uruuniHemjee" placeholder="Хэмжээ (м.кв)" onChange={handleChange} required className="border p-2 rounded" />
-        <input name="une" placeholder="Үнэ" onChange={handleChange} required className="border p-2 rounded" />
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Байгууллагын нэр</p>
+          <input name="baiguullaga" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Төслийн нэр</p>
+          <input name="projectNer" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Байршил</p>
+          <input name="bairshil" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Айлын тоо</p>
+          <input name="ailToo" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Ашиглалтанд орох хугацаа</p>
+          <input name="ashiglaltOgnoo" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Өрөөний сонголт</p>
+          <input name="uruuniSongolt" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Хэмжээ (м.кв)</p>
+          <input name="uruuniHemjee" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
+        <div>
+          <p className="text-sm text-gray-500 mb-1">Үнэ</p>
+          <input name="une" onChange={handleChange} required className="border p-2 rounded w-full" />
+        </div>
 
         <button
           type="submit"
@@ -66,6 +90,7 @@ export default function AddUneKhanshPage() {
           {loading ? 'Хадгалж байна...' : 'Хадгалах'}
         </button>
       </form>
+
     </div>
   )
 }

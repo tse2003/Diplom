@@ -18,6 +18,7 @@ async function saveFile(file: File) {
   return `/uploads/${filename}`
 }
 
+// POST - Save uploaded file + metadata
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const file = formData.get('image') as File
@@ -30,7 +31,6 @@ export async function POST(req: NextRequest) {
 
   const imageUrl = await saveFile(file)
 
-  // Save metadata to MongoDB
   const client = await MongoClient.connect(process.env.MONGO!)
   const db = client.db()
   const collection = db.collection('images')
@@ -46,4 +46,21 @@ export async function POST(req: NextRequest) {
   client.close()
 
   return NextResponse.json({ success: true, imageUrl })
+}
+
+// ✅ GET - Return list of uploaded items
+export async function GET(req: NextRequest) {
+  try {
+    const client = await MongoClient.connect(process.env.MONGO!)
+    const db = client.db()
+    const collection = db.collection('images')
+
+    const items = await collection.find().sort({ createdAt: -1 }).toArray()
+    client.close()
+
+    return NextResponse.json(items)
+  } catch (err) {
+    console.error('Fetch error:', err)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
 }
