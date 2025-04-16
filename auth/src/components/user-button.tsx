@@ -70,7 +70,7 @@ export default function Header() {
                         <li><Link href="/">НҮҮР</Link></li>
                         <li><Link href="/medee">МЭДЭЭ</Link></li>
                         <li><Link href="/uneKhansh">ҮНЭ ХАНШ</Link></li>
-                        <li><Link href="/agents">ОФФИС & АГЕНТУУД</Link></li>
+                        <li><Link href="/agents">ШИНЭ ОРОН СУУЦ</Link></li>
                         <li><Link href="/zaruud">БАЙРНЫ ЗАР</Link></li>
                     </ul>
                 </div>
@@ -85,7 +85,7 @@ export default function Header() {
                     <li><Link href="/">НҮҮР</Link></li>
                     <li><Link href="/medee">МЭДЭЭ</Link></li>
                     <li><Link href="/uneKhansh">ҮНЭ ХАНШ</Link></li>
-                    <li><Link href="/agents">ОФФИС & АГЕНТУУД</Link></li>
+                    <li><Link href="/agents">ШИНЭ ОРОН СУУЦ</Link></li>
                     <li><Link href="/zaruud">БАЙРНЫ ЗАР</Link></li>
                 </ul>
             </div>

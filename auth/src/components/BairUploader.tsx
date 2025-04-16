@@ -24,7 +24,6 @@ export default function BairUploader() {
     'Хан-Уул': Array.from({ length: 25 }, (_, i) => `${i + 1}-р хороо`),
     'Сонгинохайрхан': Array.from({ length: 43 }, (_, i) => `${i + 1}-р хороо`),
     'Багануур': Array.from({ length: 5 }, (_, i) => `${i + 1}-р хороо`),
-    'Багахангай': Array.from({ length: 2 }, (_, i) => `${i + 1}-р хороо`),
     'Налайх': Array.from({ length: 7 }, (_, i) => `${i + 1}-р хороо`),
   }
 
