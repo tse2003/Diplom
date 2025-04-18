@@ -22,7 +22,7 @@ export default function UneKhanshTable() {
   useEffect(() => {
     fetch('/api/unekhansh')
       .then((res) => res.json())
-      .then(setData)
+      .then((resData) => setData(resData.reverse())) // Шинэ датаг эхэнд гаргана
       .finally(() => setLoading(false))
   }, [])
 

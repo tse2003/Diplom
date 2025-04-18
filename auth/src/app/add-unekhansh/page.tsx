@@ -37,7 +37,7 @@ export default function AddUneKhanshPage() {
 
     if (res.ok) {
       alert('Амжилттай нэмэгдлээ!')
-      router.push('/unekhansh')
+      router.push('/uneKhansh')
     } else {
       alert('Алдаа гарлаа.')
     }
