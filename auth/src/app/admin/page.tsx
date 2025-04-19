@@ -17,7 +17,7 @@ export default function AdminPanel() {
   const navItems = [
     { name: 'Мэдээ' },
     { name: 'Үнэ ханш' },
-    { name: 'Оффис & агентууд' },
+    { name: 'Агентууд' },
   ]
 
   const verifyPin = () => {
@@ -171,9 +171,8 @@ export default function AdminPanel() {
         )}
 
         {/* --- Оффис & агентууд --- */}
-        {active === 'Оффис & агентууд' && (
+        {active === 'Агентууд' && (
           <div className="bg-white p-4 rounded-xl shadow">
-            <h3 className="text-lg font-semibold mb-3">Оффисууд</h3>
             <Link href="/upload">
               <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
                 ➕ Нэмэх

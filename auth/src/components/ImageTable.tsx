@@ -39,10 +39,10 @@ export default function ImageTable() {
         <table className="min-w-full border">
           <thead>
             <tr className="bg-gray-100 text-left">
-              <th className="border p-2">Нэр</th>
-              <th className="border p-2">Утас</th>
               <th className="border p-2">Зураг</th>
-              <th className="border p-2">Огноо</th>
+              <th className="border p-2">Нэр</th>
+              <th className="border p-2">Утасны дугаар</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -53,7 +53,7 @@ export default function ImageTable() {
                 </td>
                 <td className="border p-2">{item.name}</td>
                 <td className="border p-2">{item.phone}</td>
-                <td className="border p-2">{new Date(item.createdAt).toLocaleString()}</td>
+                
               </tr>
             ))}
           </tbody>
