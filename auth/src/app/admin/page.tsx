@@ -1,6 +1,7 @@
 'use client'
 
 import ImageTable from '@/components/ImageTable'
+import ShineBairManager from '@/components/ShineBairManager'
 import UneKhanshTable from '@/components/UneKhanshTable'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -18,6 +19,7 @@ export default function AdminPanel() {
     { name: 'Мэдээ' },
     { name: 'Үнэ ханш' },
     { name: 'Агентууд' },
+    { name: 'Шинэ байр' },
   ]
 
   const verifyPin = () => {
@@ -179,6 +181,18 @@ export default function AdminPanel() {
               </button>
             </Link>
             <ImageTable />
+          </div>
+        )}
+
+        {/* --- Шинэ байр --- */}
+        {active === 'Шинэ байр' && (
+          <div className="bg-white p-4 rounded-xl shadow">
+            <Link href="/addBair">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-700">
+                ➕ Нэмэх
+              </button>
+            </Link>
+            <ShineBairManager />
           </div>
         )}
       </main>
