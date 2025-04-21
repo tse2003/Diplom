@@ -92,6 +92,8 @@ export default function ZaruudPage() {
   const [dawkharFilter, setDawkharFilter] = useState('Бүгд')
   const [uruuFilter, setUruuFilter] = useState('Бүгд')
   const [searchQuery, setSearchQuery] = useState('')
+  const [minNiitune, setMinNiitune] = useState('')
+  const [maxNiitune, setMaxNiitune] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,10 +119,28 @@ export default function ZaruudPage() {
     const query = searchQuery.toLowerCase()
     const matchesSearch =
       item.title.toLowerCase().includes(query) ||
-      item.tailbar?.toLowerCase().includes(query)
+      item.tailbar?.toLowerCase().includes(query) ||
+      item.duureg?.toLowerCase().includes(query) ||
+      item.khoroo?.toLowerCase().includes(query) ||
+      item.nukhtsul?.toLowerCase().includes(query) ||
+      item.mkb?.toLowerCase().includes(query) ||
+      item.mkbune?.toLowerCase().includes(query) ||
+      item.niitune?.toLowerCase().includes(query) ||
+      item.bairshil?.toLowerCase().includes(query) ||
+      item.phone?.toLowerCase().includes(query) ||
+      item.dawkhar?.toLowerCase().includes(query) ||
+      item.uruu?.toLowerCase().includes(query)
+
+    const niituneNumber = parseFloat(item.niitune.replace(/[^\d.]/g, ''))
+    const min = parseFloat(minNiitune)
+    const max = parseFloat(maxNiitune)
+    const matchesPrice =
+      (!minNiitune || niituneNumber >= min) &&
+      (!maxNiitune || niituneNumber <= max)
 
     return (
       matchesSearch &&
+      matchesPrice &&
       (duuregFilter === 'Бүгд' || item.duureg === duuregFilter) &&
       (turulFilter === 'Бүгд' || item.turul === turulFilter) &&
       (dawkharFilter === 'Бүгд' || item.dawkhar === dawkharFilter) &&
@@ -132,35 +152,77 @@ export default function ZaruudPage() {
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Бүх зарууд</h1>
 
-      <div className="mb-6 relative">
-        <input
-          type="text"
-          className="input input-bordered w-full pl-12 pr-4 py-3"
-          placeholder="Гарчиг, тайлбар эсвэл байршлаар хайх..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
-      </div>
+      {/* 🔍 Хайлт ба шүүлтүүрүүд */}
+<div className="mb-6 relative">
+  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black text-lg">🔍</span>
+  <input
+    type="text"
+    className="w-full pl-12 pr-4 py-3 border border-black rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent"
+    placeholder="Гарчиг, тайлбар эсвэл байршлаар хайх..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+</div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <select className="select select-bordered" value={duuregFilter} onChange={(e) => setDuuregFilter(e.target.value)}>
-          <option value="Бүгд">Дүүрэг</option>
-          {duuregList.map((d) => <option key={d}>{d}</option>)}
-        </select>
-        <select className="select select-bordered" value={turulFilter} onChange={(e) => setTurulFilter(e.target.value)}>
-          <option value="Бүгд">Төрөл</option>
-          {turulList.map((t) => <option key={t}>{t}</option>)}
-        </select>
-        <select className="select select-bordered" value={dawkharFilter} onChange={(e) => setDawkharFilter(e.target.value)}>
-          <option value="Бүгд">Давхар</option>
-          {dawkharList.map((d) => <option key={d}>{d}</option>)}
-        </select>
-        <select className="select select-bordered" value={uruuFilter} onChange={(e) => setUruuFilter(e.target.value)}>
-          <option value="Бүгд">Өрөө</option>
-          {uruuList.map((u) => <option key={u}>{u}</option>)}
-        </select>
-      </div>
+<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  <select
+    className="select w-full border border-black rounded-md"
+    value={duuregFilter}
+    onChange={(e) => setDuuregFilter(e.target.value)}
+  >
+    <option value="Бүгд">Дүүрэг</option>
+    {duuregList.map((d) => <option key={d}>{d}</option>)}
+  </select>
+
+  <select
+    className="select w-full border border-black rounded-md"
+    value={turulFilter}
+    onChange={(e) => setTurulFilter(e.target.value)}
+  >
+    <option value="Бүгд">Төрөл</option>
+    {turulList.map((t) => <option key={t}>{t}</option>)}
+  </select>
+
+  <select
+    className="select w-full border border-black rounded-md"
+    value={dawkharFilter}
+    onChange={(e) => setDawkharFilter(e.target.value)}
+  >
+    <option value="Бүгд">Давхар</option>
+    {dawkharList.map((d) => <option key={d}>{d}</option>)}
+  </select>
+
+  <select
+    className="select w-full border border-black rounded-md"
+    value={uruuFilter}
+    onChange={(e) => setUruuFilter(e.target.value)}
+  >
+    <option value="Бүгд">Өрөө</option>
+    {uruuList.map((u) => <option key={u}>{u}</option>)}
+  </select>
+</div>
+
+{/* 💰 Үнээр шүүх хэсэг */}
+<div className="bg-gray-50 p-4 rounded-md border border-black mb-6">
+  <p className="text-lg font-semibold mb-2 text-center">💰 Үнээр шүүх</p>
+  <div className="flex flex-col sm:flex-row gap-4">
+    <input
+      type="number"
+      className="input input-bordered border-black w-full"
+      placeholder="Доод үнэ"
+      value={minNiitune}
+      onChange={(e) => setMinNiitune(e.target.value)}
+    />
+    <input
+      type="number"
+      className="input input-bordered border-black w-full"
+      placeholder="Дээд үнэ"
+      value={maxNiitune}
+      onChange={(e) => setMaxNiitune(e.target.value)}
+    />
+  </div>
+</div>
+
 
       {loading && <p>Уншиж байна...</p>}
       {error && <p className="text-red-500">{error}</p>}
