@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import CommentSection from '@/components/CommentSection'
+import MedeeCommentSection from '@/components/MedeeCommentSection'
 
 interface ShineBair {
   _id: string
@@ -178,6 +179,9 @@ export default function Home() {
             <h3 className="font-bold text-lg">{selectedMedee.garchig}</h3>
             <img src={selectedMedee.imgUrl} className="w-full h-auto max-h-[500px] object-contain my-2 rounded" />
             <p className="text-sm whitespace-pre-line">{selectedMedee.tailbar}</p>
+            <div className="mt-6">
+              <MedeeCommentSection medeeId={selectedMedee._id} />
+            </div>
             <div className="modal-action">
               <button className="btn" onClick={() => setSelectedMedee(null)}>Хаах</button>
             </div>
@@ -187,4 +191,3 @@ export default function Home() {
     </div>
   )
 }
-

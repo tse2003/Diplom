@@ -1,5 +1,6 @@
 'use client'
 
+import MedeeCommentSection from '@/components/MedeeCommentSection'
 import { useEffect, useState } from 'react'
 
 type MedeeItem = {
@@ -76,6 +77,8 @@ export default function MedeeList() {
               Огноо: {new Date(selected.ognoo).toLocaleDateString()}
             </p>
             <p className="whitespace-pre-line text-gray-700">{selected.tailbar}</p>
+
+            <MedeeCommentSection medeeId={selected._id} />
 
             <div className="modal-action">
               <button className="btn" onClick={() => setSelected(null)}>
