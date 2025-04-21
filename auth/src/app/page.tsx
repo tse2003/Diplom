@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import CommentSection from '@/components/CommentSection'
 
 interface ShineBair {
   _id: string
@@ -143,6 +144,10 @@ export default function Home() {
               <p><strong>Утас:</strong> {highlight.phone}</p>
               <p className="pt-2 whitespace-pre-line">{highlight.tailbar}</p>
             </div>
+            <div className="mt-6">
+              <h4 className="font-semibold text-base mb-2">Сэтгэгдэл</h4>
+              <CommentSection bairId={highlight._id} />
+            </div>
             <div className="modal-action">
               <button className="btn" onClick={() => setHighlight(null)}>Хаах</button>
             </div>
@@ -182,3 +187,4 @@ export default function Home() {
     </div>
   )
 }
+

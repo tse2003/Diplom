@@ -26,6 +26,61 @@ const turulList = ['Шинэ', 'Хуучин']
 const dawkharList = ['1', '2', '3', '4', '5+']
 const uruuList = ['1', '2', '3', '4', '5+']
 
+function CommentSection({ bairId }: { bairId: string }) {
+  const [comments, setComments] = useState<any[]>([])
+  const [name, setName] = useState('')
+  const [content, setContent] = useState('')
+
+  useEffect(() => {
+    fetch(`/api/comments?bairId=${bairId}`)
+      .then(res => res.json())
+      .then(setComments)
+  }, [bairId])
+
+  const submitComment = async () => {
+    if (!content.trim()) return
+    const res = await fetch('/api/comments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bairId, name, content })
+    })
+    const result = await res.json()
+    if (result.success) {
+      setComments([{ name, content, createdAt: new Date().toISOString() }, ...comments])
+      setContent('')
+    }
+  }
+
+  return (
+    <div className="mt-4">
+      <div className="space-y-3 mb-4">
+        {comments.map((c, i) => (
+          <div key={i} className="p-3 bg-gray-100 rounded">
+            <p className="text-sm text-gray-500">{c.name || 'Зочин'} - {new Date(c.createdAt).toLocaleString()}</p>
+            <p>{c.content}</p>
+          </div>
+        ))}
+      </div>
+      <p className='font-bold'>Нэр:</p>
+      <input
+        className="input input-bordered w-full mb-2 border-accent"
+        placeholder="Нэр (заавал биш)"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <p className='font-bold'>Сэтгэгдэл:</p>
+      <textarea
+        className="textarea textarea-bordered w-full mb-2"
+        rows={3}
+        placeholder="Сэтгэгдэл бичих..."
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <button className="btn btn-primary" onClick={submitComment}>Нэмэх</button>
+    </div>
+  )
+}
+
 export default function ZaruudPage() {
   const [bairuud, setBairuud] = useState<BairData[]>([])
   const [selected, setSelected] = useState<BairData | null>(null)
@@ -36,6 +91,7 @@ export default function ZaruudPage() {
   const [turulFilter, setTurulFilter] = useState('Бүгд')
   const [dawkharFilter, setDawkharFilter] = useState('Бүгд')
   const [uruuFilter, setUruuFilter] = useState('Бүгд')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +114,13 @@ export default function ZaruudPage() {
   }, [])
 
   const filtered = bairuud.filter((item) => {
+    const query = searchQuery.toLowerCase()
+    const matchesSearch =
+      item.title.toLowerCase().includes(query) ||
+      item.tailbar?.toLowerCase().includes(query)
+
     return (
+      matchesSearch &&
       (duuregFilter === 'Бүгд' || item.duureg === duuregFilter) &&
       (turulFilter === 'Бүгд' || item.turul === turulFilter) &&
       (dawkharFilter === 'Бүгд' || item.dawkhar === dawkharFilter) &&
@@ -70,23 +132,30 @@ export default function ZaruudPage() {
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Бүх зарууд</h1>
 
-      {/* Шүүлтүүр хэсэг */}
+      <div className="mb-6 relative">
+        <input
+          type="text"
+          className="input input-bordered w-full pl-12 pr-4 py-3"
+          placeholder="Гарчиг, тайлбар эсвэл байршлаар хайх..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <select className="select select-bordered" value={duuregFilter} onChange={(e) => setDuuregFilter(e.target.value)}>
           <option value="Бүгд">Дүүрэг</option>
           {duuregList.map((d) => <option key={d}>{d}</option>)}
         </select>
-
         <select className="select select-bordered" value={turulFilter} onChange={(e) => setTurulFilter(e.target.value)}>
           <option value="Бүгд">Төрөл</option>
           {turulList.map((t) => <option key={t}>{t}</option>)}
         </select>
-
         <select className="select select-bordered" value={dawkharFilter} onChange={(e) => setDawkharFilter(e.target.value)}>
           <option value="Бүгд">Давхар</option>
           {dawkharList.map((d) => <option key={d}>{d}</option>)}
         </select>
-
         <select className="select select-bordered" value={uruuFilter} onChange={(e) => setUruuFilter(e.target.value)}>
           <option value="Бүгд">Өрөө</option>
           {uruuList.map((u) => <option key={u}>{u}</option>)}
@@ -122,20 +191,12 @@ export default function ZaruudPage() {
         ))}
       </div>
 
-      {/* Dialog */}
       {selected && (
         <dialog id="my_modal" className="modal modal-open" onClick={() => setSelected(null)}>
-          <div
-            className="modal-box w-[700px] max-w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="modal-box w-[700px] max-w-full" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-bold text-lg mb-2">{selected.title}</h3>
             {selected.imageUrl && (
-              <img
-                src={selected.imageUrl}
-                alt="Image"
-                className="w-full h-52 object-cover rounded mb-3"
-              />
+              <img src={selected.imageUrl} alt="Image" className="w-full h-52 object-cover rounded mb-3" />
             )}
             <p><b>Дүүрэг:</b> {selected.duureg}, {selected.khoroo}</p>
             <p><b>Талбай:</b> {selected.mkb} м²</p>
@@ -151,7 +212,7 @@ export default function ZaruudPage() {
             {selected.tailbar && (
               <p className="mt-2 text-gray-600 whitespace-pre-line">{selected.tailbar}</p>
             )}
-
+            <CommentSection bairId={selected._id} />
             <div className="modal-action">
               <button className="btn" onClick={() => setSelected(null)}>Хаах</button>
             </div>
