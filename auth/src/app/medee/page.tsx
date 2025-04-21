@@ -14,6 +14,7 @@ type MedeeItem = {
 export default function MedeeList() {
   const [medee, setMedee] = useState<MedeeItem[]>([])
   const [selected, setSelected] = useState<MedeeItem | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,12 +26,34 @@ export default function MedeeList() {
     fetchData()
   }, [])
 
+  const filteredMedee = medee.filter((item) => {
+    const query = searchQuery.toLowerCase()
+    return (
+      item.garchig.toLowerCase().includes(query) ||
+      item.tailbar.toLowerCase().includes(query)
+    )
+  })
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Мэдээ</h1>
 
+      {/* 🔍 Хайлт */}
+      <div className="mb-6 relative">
+        <input
+          type="text"
+          className="w-full pl-12 pr-4 py-3 border border-black rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accents"
+          placeholder="Мэдээний гарчиг эсвэл агуулгаар хайх..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+          🔍
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {medee.map((item) => (
+        {filteredMedee.map((item) => (
           <div
             key={item._id}
             className="card bg-base-100 shadow-sm w-full cursor-pointer"

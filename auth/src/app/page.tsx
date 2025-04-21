@@ -64,7 +64,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="m-auto w-[900px] bg-slate-100 py-6 px-4 rounded">
+    <div className="m-auto w-[900px] py-6 px-4 rounded">
       <h1 className="text-2xl font-bold text-center pb-4">ШИНЭ ОРОН СУУЦУУД</h1>
 
       <div className="carousel w-full h-[400px] rounded-box mb-4">
