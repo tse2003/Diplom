@@ -1,145 +1,142 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { 
-    Card,
-    CardHeader,
-    CardDescription,
-    CardContent,
-    CardTitle
- } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-
-import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import { TriangleAlert } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { TriangleAlert }from "lucide-react"
+import { toast } from "sonner";
 
 const SignUp = () => {
-    const [form, setForm] = useState({
-        lastname: "",
-        firstname: "",
-        phone: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    })
-    const [pending, setPending] = useState(false);
-    const [error, setError] = useState(null);
-    const router = useRouter();
+  const [form, setForm] = useState({
+    lastname: "",
+    firstname: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setPending(true)
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-        const res = await fetch("/api/auth/signup",{
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(form),
-        });
-        const data = await res.json();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPending(true);
 
-        if(res.ok) {
-            setPending(false);
-            toast.success(data.message);
-            router.push("/sign-in");
-        } else if (res.status === 400) {
-            setError(data.message)
-            setPending(false)
-        } else if (res.status === 500) {
-            setError(data.message);
-            setPending(false);
-        }
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setPending(false);
+      toast.success(data.message);
+      router.push("/sign-in");
+    } else {
+      setError(data.message || "Something went wrong");
+      setPending(false);
     }
+  };
 
-    return (
-        <div className="h-full flex items-center justify-center bg-[#1b0918]">
-            <Card className="md:h-auto w-[80%] sm:w-[420px] p-4 sm:p-8">
-                <CardHeader>
-                    <CardTitle className="text-center">
-                        Sign up
-                    </CardTitle>
-                    <CardDescription className="text-sm text-center text-accent-foreground">
-                        Use email or service, to create account
-                    </CardDescription>
-                </CardHeader>
-                {!!error && (
-                    <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
-                        <TriangleAlert />
-                        <p>{error}</p>
-                    </div>
-                )}
-                <CardContent className="px-2 sm:px-6">
-                    <form onSubmit={handleSubmit} className="space-y-3">
-                        <Input
-                            type="text"
-                            disabled={pending}
-                            placeholder="Last name"
-                            value={form.lastname}
-                            onChange={(e) => setForm({...form, lastname:e.target.value})}
-                            required
-                        />
-                        <Input
-                            type="text"
-                            disabled={pending}
-                            placeholder="First name"
-                            value={form.firstname}
-                            onChange={(e) => setForm({...form, firstname:e.target.value})}
-                            required
-                        />
-                        <Input
-                            type="text"
-                            disabled={pending}
-                            placeholder="Phone number"
-                            value={form.phone}
-                            onChange={(e) => setForm({...form, phone:e.target.value})}
-                            required
-                        />
-                        <Input
-                            type="email"
-                            disabled={pending}
-                            placeholder="Email"
-                            value={form.email}
-                            onChange={(e) => setForm({...form, email:e.target.value})}
-                            required
-                        />
-                        <Input
-                            type="password"
-                            disabled={pending}
-                            placeholder="Password"
-                            value={form.password}
-                            onChange={(e) => setForm({...form, password:e.target.value})}
-                            required
-                        />
-                        <Input
-                            type="password"
-                            disabled={pending}
-                            placeholder="Confirm password"
-                            value={form.confirmPassword}
-                            onChange={(e) => setForm({...form, confirmPassword:e.target.value})}
-                            required
-                        />
-                        <Button
-                            className="w-full"
-                            size="lg"
-                            disabled={pending}
-                        >
-                            Continue
-                        </Button>
-                    </form>
-                    <Separator />
-                    <p className="text-center text-sm mt-2 text-muted-foreground">
-                        Already have an account?
-                        <Link className="text-sky-700 ml-4 hover:underline cursor-pointer" href="sign-in">Sign in</Link>
-                    </p>
-                </CardContent>
-            </Card>
-        </div>
-    );
-}
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-muted px-4">
+      <Card className="w-full max-w-md shadow-lg rounded-2xl">
+        <CardHeader className="space-y-1 text-center">
+          <CardTitle className="text-2xl font-semibold">БҮРТГҮҮЛЭХ</CardTitle>
+          
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {!!error && (
+            <div className="bg-red-100 text-red-700 p-3 rounded-md flex items-center gap-2 text-sm">
+              <TriangleAlert className="w-4 h-4" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                type="text"
+                placeholder="Овог"
+                value={form.firstname}
+                onChange={(e) => setForm({ ...form, firstname: e.target.value })}
+                disabled={pending}
+                required
+              />
+              <Input
+                type="text"
+                placeholder="Нэр"
+                value={form.lastname}
+                onChange={(e) => setForm({ ...form, lastname: e.target.value })}
+                disabled={pending}
+                required
+              />
+            </div>
+            <Input
+              type="text"
+              placeholder="Утасны дугаар"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              disabled={pending}
+              required
+            />
+            <Input
+              type="email"
+              placeholder="И-мэйл"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              disabled={pending}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Нууц үг"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              disabled={pending}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Нууц үгээ батлах"
+              value={form.confirmPassword}
+              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+              disabled={pending}
+              required
+            />
+            <Button className="w-full" type="submit" disabled={pending}>
+              {pending ? "Creating account..." : "Бүргүүлэх"}
+            </Button>
+          </form>
+
+          <Separator />
+
+          <p className="text-sm text-center text-muted-foreground mt-2">
+            Та бүртгэлтэй юу?{" "}
+            <Link href="/sign-in" className="text-blue-600 hover:underline">
+              Нэвтрэх
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 export default SignUp;

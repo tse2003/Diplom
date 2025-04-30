@@ -41,14 +41,14 @@ const UserButton = () => {
                             <Link href="/dashboard" className="w-full h-full block">Зар нэмэх</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="p-3 hover:bg-primary hover:text-white cursor-pointer" onClick={handleSignOut}>
-                            Log out
+                            Гарах
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             ) : (
                 <div className="flex items-center gap-2 mb-3">
-                    <Link href="sign-in" className="btn btn-sm btn-outline">Sign in</Link>
-                    <Link href="sign-up" className="btn btn-sm btn-primary">Sign up</Link>
+                    <Link href="sign-in" className="btn btn-sm btn-outline">Нэвтрэх</Link>
+                    <Link href="sign-up" className="btn btn-sm btn-primary">Бүртгүүлэх</Link>
                 </div>
             )}
         </nav>
