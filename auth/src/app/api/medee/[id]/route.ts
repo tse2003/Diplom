@@ -23,59 +23,49 @@ async function saveFile(file: File) {
   return `/uploads/${filename}`
 }
 
-// GET - Get single medee
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+// ✅ GET
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
+  const id = context.params.id
   const { client, collection } = await getCollection()
-  const medee = await collection.findOne({ _id: new ObjectId(params.id) })
+  const medee = await collection.findOne({ _id: new ObjectId(id) })
   client.close()
 
   if (!medee) {
     return NextResponse.json({ error: 'Мэдээ олдсонгүй' }, { status: 404 })
   }
 
-  return NextResponse.json({
-    ...medee,
-    _id: medee._id.toString(),
-  })
+  return NextResponse.json({ ...medee, _id: medee._id.toString() })
 }
 
-// PUT - Update medee with optional image upload
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  const formData = await req.formData()
-  const garchig = formData.get('garchig')?.toString() || ''
-  const tailbar = formData.get('tailbar')?.toString() || ''
-  let imgUrl = formData.get('imgUrl')?.toString() || ''
+// ✅ DELETE
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+  const id = context.params.id
+  const { client, collection } = await getCollection()
+  await collection.deleteOne({ _id: new ObjectId(id) })
+  client.close()
+  return NextResponse.json({ message: 'Амжилттай устгалаа' })
+}
 
+// ✅ PATCH (Засварлах)
+export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+  const id = context.params.id
+  const formData = await req.formData()
+  const garchig = formData.get('garchig') as string
+  const tailbar = formData.get('tailbar') as string
+  const ognoo = formData.get('ognoo') as string
   const image = formData.get('image') as File | null
-  if (image && image.size > 0 && image.type.startsWith('image/')) {
-    imgUrl = await saveFile(image)
+
+  const { client, collection } = await getCollection()
+
+  const updateData: any = { garchig, tailbar, ognoo }
+
+  if (image && image.name) {
+    const imgUrl = await saveFile(image)
+    updateData.imgUrl = imgUrl
   }
 
-  const { client, collection } = await getCollection()
-
-  const result = await collection.findOneAndUpdate(
-    { _id: new ObjectId(params.id) },
-    {
-      $set: {
-        garchig,
-        tailbar,
-        imgUrl,
-        ognoo: new Date(),
-      },
-    },
-    { returnDocument: 'after' }
-  )
+  await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData })
 
   client.close()
-
-  return NextResponse.json({ message: 'Амжилттай засагдлаа', updated: result })
-}
-
-// DELETE - Remove medee
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const { client, collection } = await getCollection()
-  await collection.deleteOne({ _id: new ObjectId(params.id) })
-  client.close()
-
-  return NextResponse.json({ message: 'Амжилттай устгалаа' })
+  return NextResponse.json({ message: 'Амжилттай шинэчиллээ' })
 }
