@@ -20,8 +20,7 @@ interface ShineBairItem {
 export default function ShineBairManager() {
   const [items, setItems] = useState<ShineBairItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [message, setMessage] = useState('')
-  const [image, setImage] = useState<File | null>(null)
+  const [editItem, setEditItem] = useState<ShineBairItem | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -31,76 +30,122 @@ export default function ShineBairManager() {
     setLoading(false)
   }
 
+  const deleteItem = async (id: string) => {
+    if (!confirm('Та устгахдаа итгэлтэй байна уу?')) return
+    await fetch(`/api/shinebair/${id}`, { method: 'DELETE' })
+    fetchItems()
+  }
+
+  const saveEdit = async () => {
+    if (!editItem) return
+    const res = await fetch(`/api/shinebair/${editItem._id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editItem),
+    })
+    if (res.ok) {
+      setEditItem(null)
+      fetchItems()
+    }
+  }
+
   useEffect(() => {
     fetchItems()
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget
-    const formData = new FormData(form)
-    if (!image) return setMessage('Зураг заавал оруулна уу.')
-    formData.append('image', image)
-
-    const res = await fetch('/api/shinebair', {
-      method: 'POST',
-      body: formData,
-    })
-
-    const result = await res.json()
-    if (res.ok) {
-      setMessage('Амжилттай нэмэгдлээ!')
-      form.reset()
-      setImage(null)
-      fetchItems() // Refresh the table
-    } else {
-      setMessage(result.error || 'Алдаа гарлаа')
-    }
-  }
-
   return (
-    <div className="p-6 space-y-8 max-w-6xl mx-auto">
-      <div className="overflow-x-auto bg-white shadow rounded">
-        <h2 className="text-lg font-semibold p-4">Бүх байрууд</h2>
-        {loading ? (
-          <p className="p-4">Уншиж байна...</p>
-        ) : (
-          <table className="table table-zebra w-full text-sm">
-            <thead>
-              <tr>
-                <th>Гарчиг</th>
-                <th>Зураг</th>
-                <th>Үнэ</th>
-                <th>Компани</th>
-                <th>Утас</th>
-                <th>Хугацаа</th>
-                <th>Ангилал</th>
-                <th>Хийц</th>
-                <th>Төрөл</th>
-                <th>Тайлбар</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.title}</td>
-                  <td>
-                    <img src={item.imgUrl} alt="bair" className="w-20 h-20 object-cover rounded" />
-                  </td>
-                  <td>{item.une}</td>
-                  <td>{item.company}</td>
-                  <td>{item.phone}</td>
-                  <td>{item.khugatsaa}</td>
-                  <td>{item.angilal}</td>
-                  <td>{item.khiits}</td>
-                  <td>{item.turul}</td>
-                  <td>{item.tailbar}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <h2 className="text-2xl font-bold mb-4">🏢 Бүх байрны жагсаалт</h2>
+
+      {loading ? (
+        <p>Уншиж байна...</p>
+      ) : (
+        <div className="grid gap-6">
+          {items.map((item) => (
+            <div
+              key={item._id}
+              className="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4"
+            >
+              <img
+                src={item.imgUrl}
+                alt={item.title}
+                className="w-full md:w-48 h-48 object-cover rounded"
+              />
+              <div className="flex-1 space-y-1">
+                <h3 className="text-xl font-semibold">{item.title}</h3>
+                <p className="text-sm text-gray-700">
+                  💰 <strong>{item.une}</strong> | 🏢 {item.company}
+                </p>
+                <p className="text-sm">📞 {item.phone} | 📅 {item.khugatsaa}</p>
+                <p className="text-sm">
+                  🏷️ {item.angilal} | 🧱 {item.khiits} | 🏠 {item.turul}
+                </p>
+                <div className="mt-2 text-sm text-gray-600 max-h-24 overflow-y-auto border-t pt-2">
+                  {item.tailbar}
+                </div>
+              </div>
+              <div className="flex md:flex-col gap-2 md:items-end justify-end">
+                <button
+                  onClick={() => setEditItem(item)}
+                  className="text-blue-600 hover:underline"
+                >
+                  Засах
+                </button>
+                <button
+                  onClick={() => deleteItem(item._id)}
+                  className="text-red-600 hover:underline"
+                >
+                  Устгах
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editItem && (
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-[500px] space-y-3">
+            <h3 className="text-lg font-bold">Засвар хийх</h3>
+
+            {[
+              ['title', 'Гарчиг'],
+              ['une', 'Үнэ'],
+              ['company', 'Компани'],
+              ['phone', 'Утас'],
+              ['khugatsaa', 'Хугацаа'],
+              ['angilal', 'Ангилал'],
+              ['khiits', 'Хийц'],
+              ['turul', 'Төрөл'],
+            ].map(([key, label]) => (
+              <input
+                key={key}
+                className="input input-bordered w-full"
+                placeholder={label}
+                value={(editItem as any)[key]}
+                onChange={(e) =>
+                  setEditItem({ ...editItem, [key]: e.target.value })
+                }
+              />
+            ))}
+
+            <textarea
+              className="textarea textarea-bordered w-full"
+              value={editItem.tailbar}
+              onChange={(e) =>
+                setEditItem({ ...editItem, tailbar: e.target.value })
+              }
+              placeholder="Тайлбар"
+            />
+
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setEditItem(null)} className="btn">Болих</button>
+              <button onClick={saveEdit} className="btn btn-primary">Хадгалах</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
