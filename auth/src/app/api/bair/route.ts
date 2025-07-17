@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import fs from 'fs/promises'
-import { MongoClient, ObjectId } from 'mongodb'
+import { MongoClient } from 'mongodb' // ✅ Removed ObjectId
 
 const uploadDir = path.join(process.cwd(), 'public', 'uploads')
 

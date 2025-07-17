@@ -3,7 +3,6 @@ import path from 'path'
 import fs from 'fs/promises'
 import { MongoClient } from 'mongodb'
 
-// File saving function
 const uploadDir = path.join(process.cwd(), 'public', 'uploads')
 
 async function saveFile(file: File) {
@@ -18,7 +17,7 @@ async function saveFile(file: File) {
   return `/uploads/${filename}`
 }
 
-// POST - Save uploaded file + metadata
+// ✅ POST - Save uploaded file + metadata
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const file = formData.get('image') as File
@@ -35,7 +34,7 @@ export async function POST(req: NextRequest) {
   const db = client.db()
   const collection = db.collection('images')
 
-  const result = await collection.insertOne({
+  await collection.insertOne({
     originalname: file.name,
     imageUrl,
     name,
@@ -49,7 +48,7 @@ export async function POST(req: NextRequest) {
 }
 
 // ✅ GET - Return list of uploaded items
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const client = await MongoClient.connect(process.env.MONGO!)
     const db = client.db()

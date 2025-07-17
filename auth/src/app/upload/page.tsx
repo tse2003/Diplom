@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function UploadForm() {
   const [name, setName] = useState('')
@@ -85,7 +86,13 @@ export default function UploadForm() {
       {imageUrl && (
         <div className="mt-6">
           <p className="font-medium">Амжилттай:</p>
-          <img src={imageUrl} alt="Uploaded" className="mt-2 max-w-full rounded border" />
+          <Image
+            src={imageUrl}
+            alt="Uploaded"
+            width={400}       // Adjust these sizes as you like
+            height={300}
+            className="mt-2 rounded border"
+          />
         </div>
       )}
     </div>

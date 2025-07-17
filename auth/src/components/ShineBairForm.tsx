@@ -32,7 +32,7 @@ export default function ShineBairForm() {
       } else {
         setMessage(result.error || 'Алдаа гарлаа')
       }
-    } catch (err) {
+    } catch {
       setMessage('Сервертэй холбогдож чадсангүй')
     } finally {
       setLoading(false)

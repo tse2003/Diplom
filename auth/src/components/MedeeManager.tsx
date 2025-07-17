@@ -1,11 +1,20 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+interface MedeeItem {
+  _id: string
+  garchig: string
+  tailbar: string
+  ognoo: string
+  imgUrl: string
+}
+
 export default function MedeeManager() {
-  const [medee, setMedee] = useState<any[]>([])
+  const [medee, setMedee] = useState<MedeeItem[]>([])
   const [loadingMedee, setLoadingMedee] = useState(false)
-  const [editItem, setEditItem] = useState<any | null>(null)
+  const [editItem, setEditItem] = useState<MedeeItem | null>(null)
   const [editImage, setEditImage] = useState<File | null>(null)
 
   const fetchMedee = async () => {
@@ -87,7 +96,13 @@ export default function MedeeManager() {
               {medee.map((item) => (
                 <tr key={item._id} className="hover:bg-gray-50">
                   <td className="py-3 px-4 border-b">
-                    <img src={item.imgUrl} alt="Зураг" className="w-16 h-16 object-cover rounded" />
+                    <Image
+                      src={item.imgUrl}
+                      alt="Зураг"
+                      width={64}
+                      height={64}
+                      className="object-cover rounded"
+                    />
                   </td>
                   <td className="py-3 px-4 border-b font-medium">{item.garchig}</td>
                   <td className="py-3 px-4 border-b text-sm text-gray-600 line-clamp-2">{item.tailbar}</td>

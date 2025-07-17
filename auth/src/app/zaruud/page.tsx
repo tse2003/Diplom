@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface BairData {
   _id: string
@@ -21,13 +22,19 @@ interface BairData {
   tailbar?: string
 }
 
+interface Comment {
+  name?: string
+  content: string
+  createdAt: string
+}
+
 const duuregList = ['Баянзүрх', 'Сүхбаатар', 'Чингэлтэй', 'Баянгол', 'Хан-Уул', 'Сонгинохайрхан', 'Багануур', 'Налайх']
 const turulList = ['Шинэ', 'Хуучин']
 const dawkharList = ['1', '2', '3', '4', '5+']
 const uruuList = ['1', '2', '3', '4', '5+']
 
 function CommentSection({ bairId }: { bairId: string }) {
-  const [comments, setComments] = useState<any[]>([])
+  const [comments, setComments] = useState<Comment[]>([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 
@@ -61,14 +68,14 @@ function CommentSection({ bairId }: { bairId: string }) {
           </div>
         ))}
       </div>
-      <p className='font-bold'>Нэр:</p>
+      <p className="font-bold">Нэр:</p>
       <input
         className="input input-bordered w-full mb-2 border-accent"
         placeholder="Нэр (заавал биш)"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <p className='font-bold'>Сэтгэгдэл:</p>
+      <p className="font-bold">Сэтгэгдэл:</p>
       <textarea
         className="textarea textarea-bordered w-full mb-2"
         rows={3}
@@ -105,7 +112,7 @@ export default function ZaruudPage() {
         } else {
           setError('Мэдээлэл олдсонгүй')
         }
-      } catch (err) {
+      } catch {
         setError('Алдаа гарлаа')
       } finally {
         setLoading(false)
@@ -131,9 +138,9 @@ export default function ZaruudPage() {
       item.dawkhar?.toLowerCase().includes(query) ||
       item.uruu?.toLowerCase().includes(query)
 
-    const niituneNumber = parseFloat(item.niitune.replace(/[^\d.]/g, ''))
-    const min = parseFloat(minNiitune)
-    const max = parseFloat(maxNiitune)
+    const niituneNumber = parseFloat(item.niitune.replace(/[^\d.]/g, '')) || 0
+    const min = parseFloat(minNiitune) || 0
+    const max = parseFloat(maxNiitune) || Infinity
     const matchesPrice =
       (!minNiitune || niituneNumber >= min) &&
       (!maxNiitune || niituneNumber <= max)
@@ -153,76 +160,75 @@ export default function ZaruudPage() {
       <h1 className="text-3xl font-bold mb-6">Бүх зарууд</h1>
 
       {/* 🔍 Хайлт ба шүүлтүүрүүд */}
-<div className="mb-6 relative">
-  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black text-lg">🔍</span>
-  <input
-    type="text"
-    className="w-full pl-12 pr-4 py-3 border border-black rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent"
-    placeholder="Гарчиг, тайлбар эсвэл байршлаар хайх..."
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-  />
-</div>
+      <div className="mb-6 relative">
+        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black text-lg">🔍</span>
+        <input
+          type="text"
+          className="w-full pl-12 pr-4 py-3 border border-black rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent"
+          placeholder="Гарчиг, тайлбар эсвэл байршлаар хайх..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
 
-<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-  <select
-    className="select w-full border border-black rounded-md"
-    value={duuregFilter}
-    onChange={(e) => setDuuregFilter(e.target.value)}
-  >
-    <option value="Бүгд">Дүүрэг</option>
-    {duuregList.map((d) => <option key={d}>{d}</option>)}
-  </select>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <select
+          className="select w-full border border-black rounded-md"
+          value={duuregFilter}
+          onChange={(e) => setDuuregFilter(e.target.value)}
+        >
+          <option value="Бүгд">Дүүрэг</option>
+          {duuregList.map((d) => <option key={d}>{d}</option>)}
+        </select>
 
-  <select
-    className="select w-full border border-black rounded-md"
-    value={turulFilter}
-    onChange={(e) => setTurulFilter(e.target.value)}
-  >
-    <option value="Бүгд">Төрөл</option>
-    {turulList.map((t) => <option key={t}>{t}</option>)}
-  </select>
+        <select
+          className="select w-full border border-black rounded-md"
+          value={turulFilter}
+          onChange={(e) => setTurulFilter(e.target.value)}
+        >
+          <option value="Бүгд">Төрөл</option>
+          {turulList.map((t) => <option key={t}>{t}</option>)}
+        </select>
 
-  <select
-    className="select w-full border border-black rounded-md"
-    value={dawkharFilter}
-    onChange={(e) => setDawkharFilter(e.target.value)}
-  >
-    <option value="Бүгд">Давхар</option>
-    {dawkharList.map((d) => <option key={d}>{d}</option>)}
-  </select>
+        <select
+          className="select w-full border border-black rounded-md"
+          value={dawkharFilter}
+          onChange={(e) => setDawkharFilter(e.target.value)}
+        >
+          <option value="Бүгд">Давхар</option>
+          {dawkharList.map((d) => <option key={d}>{d}</option>)}
+        </select>
 
-  <select
-    className="select w-full border border-black rounded-md"
-    value={uruuFilter}
-    onChange={(e) => setUruuFilter(e.target.value)}
-  >
-    <option value="Бүгд">Өрөө</option>
-    {uruuList.map((u) => <option key={u}>{u}</option>)}
-  </select>
-</div>
+        <select
+          className="select w-full border border-black rounded-md"
+          value={uruuFilter}
+          onChange={(e) => setUruuFilter(e.target.value)}
+        >
+          <option value="Бүгд">Өрөө</option>
+          {uruuList.map((u) => <option key={u}>{u}</option>)}
+        </select>
+      </div>
 
-{/* 💰 Үнээр шүүх хэсэг */}
-<div className="bg-gray-50 p-4 rounded-md border border-black mb-6">
-  <p className="text-lg font-semibold mb-2 text-center">💰 Үнээр шүүх</p>
-  <div className="flex flex-col sm:flex-row gap-4">
-    <input
-      type="number"
-      className="input input-bordered border-black w-full"
-      placeholder="Доод үнэ"
-      value={minNiitune}
-      onChange={(e) => setMinNiitune(e.target.value)}
-    />
-    <input
-      type="number"
-      className="input input-bordered border-black w-full"
-      placeholder="Дээд үнэ"
-      value={maxNiitune}
-      onChange={(e) => setMaxNiitune(e.target.value)}
-    />
-  </div>
-</div>
-
+      {/* 💰 Үнээр шүүх хэсэг */}
+      <div className="bg-gray-50 p-4 rounded-md border border-black mb-6">
+        <p className="text-lg font-semibold mb-2 text-center">💰 Үнээр шүүх</p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            type="number"
+            className="input input-bordered border-black w-full"
+            placeholder="Доод үнэ"
+            value={minNiitune}
+            onChange={(e) => setMinNiitune(e.target.value)}
+          />
+          <input
+            type="number"
+            className="input input-bordered border-black w-full"
+            placeholder="Дээд үнэ"
+            value={maxNiitune}
+            onChange={(e) => setMaxNiitune(e.target.value)}
+          />
+        </div>
+      </div>
 
       {loading && <p>Уншиж байна...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -235,10 +241,12 @@ export default function ZaruudPage() {
             onClick={() => setSelected(item)}
           >
             <figure className="px-10 pt-10">
-              <img
+              <Image
                 src={item.imageUrl || '/placeholder.png'}
                 alt={item.title}
-                className="rounded-xl h-48 object-cover"
+                width={384}
+                height={192}
+                className="rounded-xl object-cover w-full h-48"
               />
             </figure>
             <div className="card-body items-center text-center">
@@ -258,7 +266,13 @@ export default function ZaruudPage() {
           <div className="modal-box w-[700px] max-w-full" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-bold text-lg mb-2">{selected.title}</h3>
             {selected.imageUrl && (
-              <img src={selected.imageUrl} alt="Image" className="w-full h-52 object-cover rounded mb-3" />
+              <Image
+                src={selected.imageUrl}
+                alt="Image"
+                width={700}
+                height={208}  // h-52 (13rem) өндөртэй ойролцоо
+                className="w-full h-52 object-cover rounded mb-3"
+              />
             )}
             <p><b>Дүүрэг:</b> {selected.duureg}, {selected.khoroo}</p>
             <p><b>Талбай:</b> {selected.mkb} м²</p>

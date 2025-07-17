@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import CommentSection from '@/components/CommentSection'
 import MedeeCommentSection from '@/components/MedeeCommentSection'
 
@@ -57,14 +58,20 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
-      {/* Шинэ орон сууц */}
+      {/* 🏢 Шинэ орон сууц */}
       <section>
         <h1 className="text-3xl font-bold text-center mb-6">🏢 Шинэ орон сууцууд</h1>
 
         <div className="carousel rounded-box w-full h-[400px] overflow-hidden mb-4">
           {items.slice(0, 4).map((item, index) => (
             <div key={item._id} id={`item${index}`} className="carousel-item w-full relative">
-              <img src={item.imgUrl} className="object-cover w-full h-full rounded-xl shadow" />
+              <Image
+                src={item.imgUrl}
+                alt={item.title}
+                width={1280}
+                height={400}
+                className="object-cover w-full h-full rounded-xl shadow"
+              />
               <button
                 onClick={() => setSelected(item)}
                 className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-gray-800 font-semibold px-4 py-2 rounded shadow"
@@ -84,14 +91,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Онцлох зарууд */}
+      {/* ✨ Онцлох зарууд */}
       <section>
         <h1 className="text-3xl font-bold text-center mb-6">✨ Онцлох зарууд</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((item) => (
             <div key={item._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <figure>
-                <img src={item.imageUrl} alt={item.title} className="w-full h-60 object-cover" />
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title}
+                  width={400}
+                  height={240}
+                  className="w-full h-60 object-cover"
+                />
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{item.title}</h2>
@@ -106,14 +119,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Онцлох мэдээнүүд */}
+      {/* 📰 Онцлох мэдээнүүд */}
       <section>
         <h1 className="text-3xl font-bold text-center mb-6">📰 Онцлох мэдээнүүд</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {medeenud.map((item) => (
             <div key={item._id} className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all">
               <figure>
-                <img src={item.imgUrl} alt={item.garchig} className="w-full h-60 object-cover" />
+                <Image
+                  src={item.imgUrl}
+                  alt={item.garchig}
+                  width={400}
+                  height={240}
+                  className="w-full h-60 object-cover"
+                />
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{item.garchig}</h2>
@@ -126,12 +145,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Модал: Шинэ орон сууц */}
+      {/* 📦 Modal: Шинэ орон сууц */}
       {selected && (
         <dialog open className="modal">
           <div className="modal-box max-w-xl">
             <h3 className="text-lg font-bold">{selected.title}</h3>
-            <img src={selected.imgUrl} className="w-full rounded my-2 object-contain max-h-[400px]" />
+            <Image
+              src={selected.imgUrl}
+              alt={selected.title}
+              width={800}
+              height={400}
+              className="w-full rounded my-2 object-contain max-h-[400px]"
+            />
             <div className="text-sm space-y-1">
               <p><strong>Үнэ:</strong> {selected.une}</p>
               <p><strong>Компани:</strong> {selected.company}</p>
@@ -149,12 +174,18 @@ export default function Home() {
         </dialog>
       )}
 
-      {/* Модал: Онцлох зар */}
+      {/* 🏷️ Modal: Онцлох зар */}
       {highlight && (
         <dialog open className="modal">
           <div className="modal-box max-w-2xl">
             <h3 className="text-lg font-bold">{highlight.title}</h3>
-            <img src={highlight.imageUrl} className="w-full rounded my-2 object-contain max-h-[400px]" />
+            <Image
+              src={highlight.imageUrl}
+              alt={highlight.title}
+              width={800}
+              height={400}
+              className="w-full rounded my-2 object-contain max-h-[400px]"
+            />
             <div className="text-sm space-y-1">
               <p><strong>Байршил:</strong> {highlight.bairshil}</p>
               <p><strong>Нийт үнэ:</strong> {highlight.niitune}₮</p>
@@ -176,12 +207,18 @@ export default function Home() {
         </dialog>
       )}
 
-      {/* Модал: Мэдээ */}
+      {/* 🗞️ Modal: Мэдээ */}
       {selectedMedee && (
         <dialog open className="modal">
           <div className="modal-box max-w-2xl">
             <h3 className="text-lg font-bold">{selectedMedee.garchig}</h3>
-            <img src={selectedMedee.imgUrl} className="w-full rounded my-2 object-contain max-h-[400px]" />
+            <Image
+              src={selectedMedee.imgUrl}
+              alt={selectedMedee.garchig}
+              width={800}
+              height={400}
+              className="w-full rounded my-2 object-contain max-h-[400px]"
+            />
             <p className="text-sm whitespace-pre-line">{selectedMedee.tailbar}</p>
             <div className="mt-4">
               <MedeeCommentSection medeeId={selectedMedee._id} />

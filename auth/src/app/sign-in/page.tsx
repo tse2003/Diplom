@@ -5,14 +5,11 @@ import {
   CardHeader,
   CardContent,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { TriangleAlert } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -53,7 +50,6 @@ const SignIn = () => {
       <Card className="w-full max-w-md shadow-lg rounded-2xl">
         <CardHeader className="text-center space-y-1">
           <CardTitle className="text-2xl font-semibold">НЭВТРЭХ</CardTitle>
-          
         </CardHeader>
         <CardContent className="space-y-4">
           {!!error && (
@@ -65,7 +61,7 @@ const SignIn = () => {
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <Input
-              type="И-мэйл"
+              type="email"
               placeholder="И-мэйл"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

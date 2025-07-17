@@ -2,6 +2,7 @@
 
 import MedeeCommentSection from '@/components/MedeeCommentSection'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 type MedeeItem = {
   _id: string
@@ -60,10 +61,12 @@ export default function MedeeList() {
             onClick={() => setSelected(item)}
           >
             <figure className="px-10 pt-10">
-              <img
+              <Image
                 src={item.imgUrl}
                 alt={item.garchig}
-                className="rounded-xl h-48 object-cover"
+                width={400}
+                height={192}
+                className="rounded-xl h-48 object-cover w-full"
               />
             </figure>
             <div className="card-body items-center text-center">
@@ -91,9 +94,11 @@ export default function MedeeList() {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="font-bold text-lg mb-3">{selected.garchig}</h3>
-            <img
+            <Image
               src={selected.imgUrl}
               alt="Image"
+              width={700}
+              height={208}
               className="w-full h-52 object-cover rounded mb-3"
             />
             <p className="text-sm text-gray-500 mb-2">

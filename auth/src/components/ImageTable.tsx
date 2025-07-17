@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface UploadedItem {
   _id: string
@@ -18,7 +19,7 @@ export default function ImageTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/upload') // Same endpoint for GET
+        const res = await fetch('/api/upload')
         const result = await res.json()
         setData(result)
       } catch (err) {
@@ -42,18 +43,24 @@ export default function ImageTable() {
               <th className="border p-2">Зураг</th>
               <th className="border p-2">Нэр</th>
               <th className="border p-2">Утасны дугаар</th>
-              
             </tr>
           </thead>
           <tbody>
             {data.map((item) => (
               <tr key={item._id}>
                 <td className="border p-2">
-                  <img src={item.imageUrl} alt={item.originalname} className="w-20 h-20 object-cover rounded" />
+                  <div className="relative w-20 h-20">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.originalname}
+                      fill
+                      className="object-cover rounded"
+                      sizes="80px"
+                    />
+                  </div>
                 </td>
                 <td className="border p-2">{item.name}</td>
                 <td className="border p-2">{item.phone}</td>
-                
               </tr>
             ))}
           </tbody>

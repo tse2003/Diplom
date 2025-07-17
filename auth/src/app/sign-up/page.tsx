@@ -4,14 +4,11 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -59,7 +56,6 @@ const SignUp = () => {
       <Card className="w-full max-w-md shadow-lg rounded-2xl">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-semibold">БҮРТГҮҮЛЭХ</CardTitle>
-          
         </CardHeader>
         <CardContent className="space-y-4">
           {!!error && (

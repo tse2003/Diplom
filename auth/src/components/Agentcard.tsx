@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface UploadedItem {
   _id: string
@@ -38,10 +39,12 @@ export default function Agentcard() {
       {data.map((item) => (
         <div key={item._id} className="card bg-base-100 w-56 shadow-md">
           <figure>
-            <img
+            <Image
               src={item.imageUrl}
               alt={item.originalname}
-              className="w-56 h-full object-cover"
+              width={224} // w-56 = 224px
+              height={224}
+              className="object-cover"
             />
           </figure>
           <div className="card-body bg-slate-200">

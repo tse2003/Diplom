@@ -2,8 +2,14 @@
 
 import { useEffect, useState } from 'react'
 
+interface Comment {
+  name?: string
+  content: string
+  createdAt: string
+}
+
 export default function CommentSection({ bairId }: { bairId: string }) {
-  const [comments, setComments] = useState<any[]>([])
+  const [comments, setComments] = useState<Comment[]>([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 
@@ -15,14 +21,20 @@ export default function CommentSection({ bairId }: { bairId: string }) {
 
   const submitComment = async () => {
     if (!content.trim()) return
+
     const res = await fetch('/api/comments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ bairId, name, content })
     })
+
     const result = await res.json()
+
     if (result.success) {
-      setComments([{ name, content, createdAt: new Date().toISOString() }, ...comments])
+      setComments([
+        { name, content, createdAt: new Date().toISOString() },
+        ...comments
+      ])
       setContent('')
     }
   }
@@ -39,14 +51,14 @@ export default function CommentSection({ bairId }: { bairId: string }) {
           </div>
         ))}
       </div>
-      <p className='font-bold'>Нэр:</p>
+      <p className="font-bold">Нэр:</p>
       <input
         className="input input-bordered w-full mb-2 border-accent"
         placeholder="Нэр (заавал биш)"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <p className='font-bold'>Сэтгэгдэл:</p>
+      <p className="font-bold">Сэтгэгдэл:</p>
       <textarea
         className="textarea textarea-bordered w-full mb-2"
         rows={3}

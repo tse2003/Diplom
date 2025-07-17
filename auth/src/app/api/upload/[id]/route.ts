@@ -37,13 +37,18 @@ export async function DELETE(req: NextRequest, context: { params: { id: string }
 }
 
 // ✅ PATCH - Edit name and phone
+type UpdateImageFields = {
+  name?: string
+  phone?: string
+}
+
 export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
   const id = context.params.id
   const body = await req.json()
 
   const { client, collection } = await getCollection()
 
-  const updateFields: any = {}
+  const updateFields: UpdateImageFields = {}
   if (body.name) updateFields.name = body.name
   if (body.phone) updateFields.phone = body.phone
 

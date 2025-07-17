@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function BairUploader() {
   const today = new Date().toISOString().split('T')[0]
@@ -37,7 +38,7 @@ export default function BairUploader() {
       return
     }
 
-    let updatedForm = { ...form, [name]: value }
+    const updatedForm = { ...form, [name]: value }
 
     if (name === 'mkb' || name === 'mkbune') {
       const mkb = parseFloat(name === 'mkb' ? value : form.mkb)
@@ -73,6 +74,7 @@ export default function BairUploader() {
         setError(data.message || 'Хуулж чадсангүй')
       }
     } catch (err) {
+      console.error('Upload error:', err)
       setError('Алдаа гарлаа.')
     } finally {
       setLoading(false)
@@ -169,7 +171,13 @@ export default function BairUploader() {
       {uploaded && (
         <div className="mt-4">
           <p className="font-semibold">Оруулсан зураг:</p>
-          <img src={uploaded} alt="Uploaded" className="w-48 mt-2 border rounded" />
+          <Image
+            src={uploaded}
+            alt="Uploaded"
+            width={192}
+            height={192}
+            className="mt-2 border rounded"
+          />
         </div>
       )}
     </div>

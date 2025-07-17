@@ -13,6 +13,20 @@ async function getCollection() {
   return { client, collection }
 }
 
+// Define the type for fields that can be updated
+type ShinebairUpdateFields = {
+  title?: string
+  une?: string
+  company?: string
+  phone?: string
+  khugatsaa?: string
+  angilal?: string
+  khiits?: string
+  turul?: string
+  tailbar?: string
+  updatedAt?: Date
+}
+
 // ✅ DELETE - remove document and image file
 export async function DELETE(
   req: NextRequest,
@@ -68,14 +82,16 @@ export async function PATCH(
     'khiits',
     'turul',
     'tailbar',
-  ]
+  ] as const
 
-  const updateFields: any = {}
+  const updateFields: ShinebairUpdateFields = {}
+
   for (const field of allowedFields) {
     if (updateData[field] !== undefined) {
       updateFields[field] = updateData[field]
     }
   }
+
   updateFields.updatedAt = new Date()
 
   const { client, collection } = await getCollection()

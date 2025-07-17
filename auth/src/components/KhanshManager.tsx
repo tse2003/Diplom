@@ -1,10 +1,22 @@
 'use client'
 import { useEffect, useState } from 'react'
 
+interface KhanshItem {
+  _id: string
+  baiguullaga: string
+  projectNer: string
+  bairshil: string
+  ailToo: string
+  uruuniSongolt: string
+  uruuniHemjee: string
+  une: string
+  ashiglaltOgnoo: string
+}
+
 export default function KhanshManager() {
-  const [items, setItems] = useState<any[]>([])
+  const [items, setItems] = useState<KhanshItem[]>([])
   const [loading, setLoading] = useState(false)
-  const [editItem, setEditItem] = useState<any | null>(null)
+  const [editItem, setEditItem] = useState<KhanshItem | null>(null)
 
   const fetchData = async () => {
     setLoading(true)

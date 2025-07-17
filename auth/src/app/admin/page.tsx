@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import ImageTable from '@/components/ImageTable'
 import ShineBairManager from '@/components/ShineBairManager'
-import UneKhanshTable from '@/components/UneKhanshTable'
 import MedeeManager from '@/components/MedeeManager'
 import KhanshManager from '@/components/KhanshManager'
 import ImageManager from '@/components/ImageManager'

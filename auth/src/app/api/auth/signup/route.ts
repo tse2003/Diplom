@@ -61,7 +61,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "User created" }, { status: 201 });
 
     } catch (error) {
-        // Handle server errors
+        console.error("Signup error:", error); // ✅ Logging the error fixes the lint warning
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
     }
 }

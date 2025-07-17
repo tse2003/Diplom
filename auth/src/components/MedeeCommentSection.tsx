@@ -2,8 +2,14 @@
 
 import { useEffect, useState } from 'react'
 
+interface Comment {
+  name: string
+  content: string
+  createdAt: string
+}
+
 export default function MedeeCommentSection({ medeeId }: { medeeId: string }) {
-  const [comments, setComments] = useState<any[]>([])
+  const [comments, setComments] = useState<Comment[]>([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
 

@@ -6,6 +6,14 @@ import fs from 'fs/promises'
 const uri = process.env.MONGO!
 const uploadDir = path.join(process.cwd(), 'public', 'uploads')
 
+// Type for PATCH update data
+type MedeeUpdateData = {
+  garchig: string
+  tailbar: string
+  ognoo: string
+  imgUrl?: string
+}
+
 async function getCollection() {
   const client = await MongoClient.connect(uri)
   const db = client.db()
@@ -57,7 +65,7 @@ export async function PATCH(req: NextRequest, context: { params: { id: string } 
 
   const { client, collection } = await getCollection()
 
-  const updateData: any = { garchig, tailbar, ognoo }
+  const updateData: MedeeUpdateData = { garchig, tailbar, ognoo }
 
   if (image && image.name) {
     const imgUrl = await saveFile(image)

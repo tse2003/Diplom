@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface ShineBairItem {
   _id: string
@@ -53,10 +54,10 @@ export default function ShineBairCards() {
   }, [searchQuery, items])
 
   return (
-    <div className='max-w-7xl mx-auto p-6'>
+    <div className="max-w-7xl mx-auto p-6">
       {/* 🔍 Хайлт */}
       <div className="relative w-full pb-5">
-        <p className='text-xl font-bold pb-2'>ХАЙЛТ ХИЙХ:</p>
+        <p className="text-xl font-bold pb-2">ХАЙЛТ ХИЙХ:</p>
         <input
           type="text"
           className="input w-full pl-10 border border-black rounded-md"
@@ -65,7 +66,6 @@ export default function ShineBairCards() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-
 
       {/* 🏠 Зарын жагсаалт */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -77,8 +77,15 @@ export default function ShineBairCards() {
             className="card bg-white shadow-xl hover:shadow-2xl cursor-pointer transition h-full"
             onClick={() => setSelected(item)}
           >
-            <figure className="h-64 w-full">
-              <img src={item.imgUrl} alt={item.title} className="w-full h-full object-cover rounded-t-xl" />
+            <figure className="h-64 w-full relative">
+              <Image
+                src={item.imgUrl}
+                alt={item.title}
+                fill
+                style={{ objectFit: 'cover', borderRadius: '0.75rem 0.75rem 0 0' }}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                priority={false}
+              />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{item.title}</h2>
@@ -94,8 +101,15 @@ export default function ShineBairCards() {
         <dialog id="shinebair-dialog" className="modal modal-open">
           <div className="modal-box w-full max-w-3xl">
             <h3 className="font-bold text-xl mb-3">{selected.title}</h3>
-            <div className="w-full h-[400px] mb-4 overflow-hidden rounded-xl">
-              <img src={selected.imgUrl} alt="dialog img" className="w-full h-full object-cover" />
+            <div className="w-full h-[400px] mb-4 overflow-hidden rounded-xl relative">
+              <Image
+                src={selected.imgUrl}
+                alt={selected.title}
+                fill
+                style={{ objectFit: 'cover', borderRadius: '0.75rem' }}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
             </div>
             <div className="space-y-1 text-sm">
               <p><strong>Үнэ:</strong> {selected.une}</p>

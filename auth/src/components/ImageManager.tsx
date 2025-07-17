@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface UploadedItem {
   _id: string
@@ -85,11 +86,15 @@ export default function ImageManager() {
               {data.map((item) => (
                 <tr key={item._id} className="hover:bg-gray-50">
                   <td className="p-2 border">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.originalname}
-                      className="w-20 h-20 object-cover rounded"
-                    />
+                    <div className="relative w-20 h-20">
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.originalname}
+                        fill
+                        className="object-cover rounded"
+                        sizes="80px"
+                      />
+                    </div>
                   </td>
                   <td className="p-2 border">{item.name}</td>
                   <td className="p-2 border">{item.phone}</td>
@@ -114,7 +119,6 @@ export default function ImageManager() {
         </div>
       )}
 
-      {/* Edit Dialog */}
       {editItem && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl w-[400px] space-y-4 shadow-lg">

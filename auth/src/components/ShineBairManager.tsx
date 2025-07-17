@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface ShineBairItem {
   _id: string
@@ -66,10 +67,12 @@ export default function ShineBairManager() {
               key={item._id}
               className="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4"
             >
-              <img
+              <Image
                 src={item.imgUrl}
                 alt={item.title}
-                className="w-full md:w-48 h-48 object-cover rounded"
+                width={192}       // width пикселээр
+                height={192}      // height пикселээр
+                className="object-cover rounded"
               />
               <div className="flex-1 space-y-1">
                 <h3 className="text-xl font-semibold">{item.title}</h3>
@@ -118,17 +121,21 @@ export default function ShineBairManager() {
               ['angilal', 'Ангилал'],
               ['khiits', 'Хийц'],
               ['turul', 'Төрөл'],
-            ].map(([key, label]) => (
-              <input
-                key={key}
-                className="input input-bordered w-full"
-                placeholder={label}
-                value={(editItem as any)[key]}
-                onChange={(e) =>
-                  setEditItem({ ...editItem, [key]: e.target.value })
-                }
-              />
-            ))}
+            ].map(([key, label]) => {
+              const k = key as keyof ShineBairItem
+              return (
+                <input
+                  key={key}
+                  className="input input-bordered w-full"
+                  placeholder={label}
+                  value={editItem ? editItem[k] : ''}
+                  onChange={(e) => {
+                    if (!editItem) return
+                    setEditItem({ ...editItem, [k]: e.target.value })
+                  }}
+                />
+              )
+            })}
 
             <textarea
               className="textarea textarea-bordered w-full"
@@ -140,8 +147,12 @@ export default function ShineBairManager() {
             />
 
             <div className="flex justify-end gap-2">
-              <button onClick={() => setEditItem(null)} className="btn">Болих</button>
-              <button onClick={saveEdit} className="btn btn-primary">Хадгалах</button>
+              <button onClick={() => setEditItem(null)} className="btn">
+                Болих
+              </button>
+              <button onClick={saveEdit} className="btn btn-primary">
+                Хадгалах
+              </button>
             </div>
           </div>
         </div>
